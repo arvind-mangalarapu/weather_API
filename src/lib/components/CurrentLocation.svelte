@@ -1,54 +1,34 @@
+<!-- src/components/LocationFetcher.svelte -->
 <script>
 	import { writable } from 'svelte/store';
+	import { latitude, longitude } from '../../stores/locationStore.js';
 
-	export const latitude = writable(null);
-	export const longitude = writable(null);
-	export const error = writable(null);
+	let fetchError = writable(null);
 
 	function getLocation() {
+		console.log('Button clicked');
+
 		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition(showPosition, showError);
+			navigator.geolocation.getCurrentPosition(
+				(position) => {
+					const lat = position.coords.latitude.toFixed(2);
+					const lon = position.coords.longitude.toFixed(2);
+					console.log(`Latitude: ${lat}, Longitude: ${lon}`);
+					latitude.set(lat);
+					longitude.set(lon);
+				},
+				(err) => {
+					fetchError.set(err.message);
+				}
+			);
 		} else {
-			error.set('Geolocation is not supported by this browser.');
-		}
-	}
-
-	function showPosition(position) {
-		latitude.set(position.coords.latitude.toFixed(2));
-		longitude.set(position.coords.longitude.toFixed(2));
-		error.set(null);
-	}
-
-	function showError(err) {
-		switch (err.code) {
-			case err.PERMISSION_DENIED:
-				error.set('User denied the request for Geolocation.');
-				break;
-			case err.POSITION_UNAVAILABLE:
-				error.set('Location information is unavailable.');
-				break;
-			case err.TIMEOUT:
-				error.set('The request to get user location timed out.');
-				break;
-			case err.UNKNOWN_ERROR:
-				error.set('An unknown error occurred.');
-				break;
+			fetchError.set('Geolocation is not supported by this browser.');
 		}
 	}
 </script>
 
-<button
-	on:click={getLocation}
-	class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
->
-	Show Current Location
-</button>
+<button on:click={getLocation} class="bg-blue-500 text-white p-2 rounded">Get Location</button>
 
-<div class="mt-4">
-	{#if $error}
-		<p class="text-red-500">Error: {$error}</p>
-	{:else if $latitude && $longitude}
-		<p>Latitude: {$latitude}</p>
-		<p>Longitude: {$longitude}</p>
-	{/if}
-</div>
+{#if $fetchError}
+	<p class="text-red-500">Error: {$fetchError}</p>
+{/if}
