@@ -15,8 +15,6 @@
 {#if error}
 	<p class="text-red-500">Error: {error}</p>
 {:else if data}
-	<pre>{JSON.stringify(data, null, 2)}</pre>
-
 	<main class="w-[100vw] bg-black items-center font-medium">
 		<div
 			class="bg-gradient-to-b from-blue-200 via-current-blue-300 to-blue-400 text-white text-center pt-20 flex flex-col gap-[20%] items-center"

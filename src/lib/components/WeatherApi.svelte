@@ -39,9 +39,9 @@
 	}
 </script>
 
-{#if $fetchError}
+<!-- {#if $fetchError}
 	<p class="text-red-500">Error: {$fetchError}</p>
 {:else if $weatherData}
 	<pre>{JSON.stringify($weatherData, null, 2)}</pre>
 	<h5 class="text-5xl">{$weatherData.location.name}</h5>
-{/if}
+{/if} -->
