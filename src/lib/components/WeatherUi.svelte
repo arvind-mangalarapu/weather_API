@@ -15,10 +15,19 @@
 {#if error}
 	<p class="text-red-500">Error: {error}</p>
 {:else if data}
-	<main class="w-[100vw] bg-black items-center font-medium">
+	<main class="w-[100vw] relative items-center font-medium">
+		<img
+			class="object-cover bg-no-repeat absolute"
+			src="https://plus.unsplash.com/premium_photo-1667030961443-69875429d7a2?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+			alt=""
+		/>
 		<div
-			class="bg-gradient-to-b from-blue-200 via-current-blue-300 to-blue-400 text-white text-center pt-20 flex flex-col gap-[20%] items-center"
+			class=" text-white text-center pt-20 flex flex-col justify-around h-[100vh] gap-[20%] items-center absolute inset-0"
 		>
+			<form action="/search" method="get">
+				<input class="roundes" type="text" name="query" placeholder="Search..." />
+				<button type="submit">Search</button>
+			</form>
 			<div>
 				<h5 class="text-[25] font-extrabold">Current Location: {data.location.name}</h5>
 				<h1 class="text-[75px] font-extralight">{data.current.temp_c}°</h1>
