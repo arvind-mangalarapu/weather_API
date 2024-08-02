@@ -34,8 +34,7 @@
 		"svelte-hmr": "^0.16.0"
 	},
 	"dependencies": {
-		"@sveltejs/adapter-static": "^3.0.2",
-		"svelte": "^4.2.18"
+		"@sveltejs/adapter-static": "^3.0.2"
 	},
 	"engines": {
 		"node": "18.x"
