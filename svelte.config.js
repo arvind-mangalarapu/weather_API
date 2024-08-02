@@ -1,16 +1,12 @@
-import adapter from '@sveltejs/adapter-static';
-import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
+import { sveltekit } from '@sveltejs/kit/vite';
+import adapter from '@sveltejs/adapter-cloudflare';
 
-/** @type {import('@sveltejs/kit').Config} */
 const config = {
 	kit: {
-		adapter: adapter({
-			pages: 'build',
-			assets: 'build',
-			fallback: 'index.html' // Use this for SPA fallback
-		})
-	},
-	preprocess: vitePreprocess()
+		adapter: adapter()
+		// other options...
+	}
+	// other SvelteKit config options...
 };
 
 export default config;
