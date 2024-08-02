@@ -1,10 +1,7 @@
 <!-- src/components/WeatherDisplay.svelte -->
 <script>
 	import { latitude, longitude } from '../../stores/locationStore.js';
-	import { writable } from 'svelte/store';
-
-	let displayData = '';
-	let fetchError = writable(null);
+	import { weatherData, fetchError } from '../../stores/weatherStore.js';
 
 	async function handleFetchWeather() {
 		const currentLatitude = $latitude;
@@ -13,8 +10,7 @@
 		if (currentLatitude && currentLongitude) {
 			try {
 				const response = await fetch(
-					`http://api.weatherapi.com/v1/forecast.json?key=9b828baf6cb941b097a101236243107&q=${currentLatitude},${currentLongitude}&days=1&aqi=yes&alerts=yes
-`
+					`http://api.weatherapi.com/v1/forecast.json?key=9b828baf6cb941b097a101236243107&q=${currentLatitude},${currentLongitude}&days=1&aqi=yes&alerts=yes`
 				);
 
 				if (!response.ok) {
@@ -22,14 +18,16 @@
 				}
 
 				const data = await response.json();
-				displayData = `Location: ${data.location.name}, Temperature: ${data.current.temp_c}°C, Condition: ${data.current.condition.text}`;
+
+				weatherData.set(data);
 				fetchError.set(null);
 			} catch (error) {
-				displayData = '';
+				weatherData.set(null);
 				fetchError.set(error.message);
 			}
 		} else {
-			displayData = 'Latitude and Longitude are not set.';
+			weatherData.set(null);
+			fetchError.set('Latitude and Longitude are not set.');
 		}
 	}
 
@@ -41,10 +39,9 @@
 	}
 </script>
 
-{#if displayData}
-	<p>{displayData}</p>
-{/if}
-
-{#if $fetchError}
+<!-- {#if $fetchError}
 	<p class="text-red-500">Error: {$fetchError}</p>
-{/if}
+{:else if $weatherData}
+	<pre>{JSON.stringify($weatherData, null, 2)}</pre>
+	<h5 class="text-5xl">{$weatherData.location.name}</h5>
+{/if} -->
